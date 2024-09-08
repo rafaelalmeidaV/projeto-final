@@ -1,0 +1,13 @@
+body{
+    background-color: grey;
+    
+}
+
+#logo-img{
+    width: 100px;
+    margin-left: 1vh;
+}
+
+#form-question{
+    margin-top: 5vh;
+}

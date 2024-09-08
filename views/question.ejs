@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<script>
+  function getToken() {
+    return localStorage.getItem('auth_token');
+}
+
+// Função para fazer uma requisição autenticada
+function authenticatedFetch(url, options) {
+    const token = getToken();
+    const headers = {
+        ...options.headers,
+        'Authorization': `Bearer ${token}`
+    };
+
+    return fetch(url, {
+        ...options,
+        headers
+    });
+}
+</script>
+<%- include ('partials/header.ejs') %>
+
+  <body>
+    <%- include ('partials/navbar.ejs') %>
+
+    <div class="container">
+      <div class="card">
+        <div class="card-header">
+          <h3>Pergunta</h3>
+        </div>
+        <div class="card-body">
+          <hr />
+          <form method="POST" action="/savequestion">
+            <label for="">Titulo</label>
+            <input
+              type="text"
+              placeholder="Titulo"
+              class="form-control"
+              name="title"
+              id="title"
+            />
+            <br /><label for="">Descrição</label>
+            <textarea
+              class="form-control"
+              name="description"
+              id="description"
+              cols="30"
+              rows="10"
+              placeholder="Descreva pergunta"
+            ></textarea>
+            <br />
+            <button class="btn btn-primary">Enviar</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </body>
+  <%- include ('partials/footer.ejs') %>

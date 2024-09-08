@@ -1,0 +1,82 @@
+<%- include ('partials/header.ejs') %>
+<!-- HTML da página de login -->
+<script>
+  document.querySelector('form').addEventListener('submit', function (event) {
+      event.preventDefault(); // Evite o envio padrão do formulário
+  
+      const email = document.querySelector('#email').value;
+      const password = document.querySelector('#password').value;
+  
+      fetch('/login', {
+          method: 'POST',
+          headers: {
+              'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({ email, password })
+      })
+      .then(response => response.json())
+      .then(data => {
+          if (data.token) {
+              localStorage.setItem('auth_token', data.token);
+              window.location.href = '/'; // Redirecione para a página inicial ou onde você preferir
+          } else {
+              alert('Login falhou: ' + data.error);
+          }
+      })
+      .catch(error => console.error('Erro:', error));
+  });
+  </script>
+  
+<body>
+  <%- include ('partials/navbar.ejs') %>
+  <div class="container">
+    <div class="row justify-content-center">
+      <div class="col-md-6">
+        <div class="card mt-5">
+          <div class="card-header text-center">
+            <h3>Login</h3>
+          </div>
+          <div class="card-body">
+            <!-- Formulário de Login -->
+            <form action="/login" method="POST">
+              <div class="form-group">
+                <label for="email">Email</label>
+                <input
+                  type="email"
+                  class="form-control"
+                  id="email"
+                  name="email"
+                  placeholder="Digite seu email"
+                  required
+                />
+              </div>
+              <div class="form-group">
+                <label for="password">Senha</label>
+                <input
+                  type="password"
+                  class="form-control"
+                  id="password"
+                  name="password"
+                  placeholder="Digite sua senha"
+                  required
+                />
+              </div>
+              <% if (errorMessage) { %>
+              <div class="alert alert-danger mt-3" role="alert">
+                <%= errorMessage %>
+              </div>
+              <% } %>
+              <button type="submit" class="btn btn-primary btn-block mt-4">
+                Entrar
+              </button>
+            </form>
+          </div>
+          <div class="card-footer text-center">
+            <p>Não tem uma conta? <a href="/register">Registre-se</a></p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+<%- include ('partials/footer.ejs') %>
